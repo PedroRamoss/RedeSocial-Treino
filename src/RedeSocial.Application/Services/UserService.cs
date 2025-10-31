@@ -86,7 +86,7 @@ namespace RedeSocial.Application.Services
             }
             catch (Exception ex)
             {
-                return Errors.UnprocessableEntity;
+                return new Error("141", ErrorType.UnprocessableEntity, "Erro ao Atualizar usuario"); 
             }
         }
 

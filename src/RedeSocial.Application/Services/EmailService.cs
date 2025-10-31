@@ -1,12 +1,32 @@
 ﻿using RedeSocial.Application.Services.Interfaces;
+using System.Net;
+using System.Net.Mail;
 
 namespace RedeSocial.Application.Services
 {
     public class EmailService : IEmailService
     {
+        private const string body = @"
+            Olá,
+
+            Obrigado por se cadastrar na RedeSocial! 🎉
+
+            Estamos muito felizes em ter você conosco. A partir de agora, você poderá aproveitar todos os recursos da nossa plataforma para se conectar, compartilhar e descobrir conteúdos incríveis.
+
+            Se tiver qualquer dúvida ou sugestão, nossa equipe está sempre pronta para ajudar.
+
+            Boas conexões,
+            Equipe RedeSocial";
+
         public async Task SendAsync(string email, string message)
         {
-            await Task.CompletedTask;
+            var client = new SmtpClient("teste", 587)
+            {
+                Credentials = new NetworkCredential("api", "minhaApiKey"),
+                EnableSsl = true
+            };
+
+            client.Send("hello@demomailtrap.co", email, "Cadastro", body);
         }
     }
 }
