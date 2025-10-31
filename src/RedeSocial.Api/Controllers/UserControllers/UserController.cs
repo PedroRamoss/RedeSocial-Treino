@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using RedeSocial.Api.Controllers.BaseController;
 using RedeSocial.Api.Controllers.UserControllers.Request;
+using RedeSocial.Api.Mappers;
 using RedeSocial.Application.Services.Interfaces;
 
 namespace RedeSocial.Api.Controllers.UserControllers
@@ -31,7 +32,7 @@ namespace RedeSocial.Api.Controllers.UserControllers
         [HttpPost("create-account")]
         public async Task<IActionResult> CreateAccountAsync([FromBody] CreateUserRequest user)
         {
-            var result = await _userService.CreateUserAsync(user);
+            var result = await _userService.CreateUserAsync(user.ToDomain());
 
             if (!result.IsSuccess)
                 HandleFailure(result);

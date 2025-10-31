@@ -36,7 +36,7 @@ namespace RedeSocial.Database.Repositories
                      @Userid = post.User.Id,
                      @Content = post.Content,
                      @PhotoUrl = post.PhotoUrl,
-                     @CreatedAt = post.CreatedAt
+                     @CreatedAt = DateTime.UtcNow
                  });
         }
     }

@@ -1,7 +1,9 @@
-﻿namespace RedeSocial.Application.Services.Interfaces
+﻿using RedeSocial.Domain.Entities;
+
+namespace RedeSocial.Application.Services.Interfaces
 {
     public interface IPostService
     {
-        Task<Result> MakeAPostAsync();
+        Task<Result> MakeAPostAsync(Post post, CancellationToken cancellationToken);
     }
 }

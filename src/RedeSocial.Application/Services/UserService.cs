@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using RedeSocial.Application.Dispatcher;
 using RedeSocial.Application.Models;
 using RedeSocial.Application.Services.Interfaces;
 using RedeSocial.Domain.Entities;
@@ -14,12 +15,13 @@ namespace RedeSocial.Application.Services
     {
         private readonly IUserRepository _userRepository;
         private readonly IConfiguration _configuration;
+        private readonly IDomainEventDispatcher _domainEventDispatcher;
 
-        public UserService(IUserRepository userRepository, IConfiguration configuration)
+        public UserService(IUserRepository userRepository, IConfiguration configuration, IDomainEventDispatcher domainEventDispatcher)
         {
             _userRepository = userRepository;
             _configuration = configuration;
-
+            _domainEventDispatcher = domainEventDispatcher;
         }
 
         public async Task<Result<object>> LoginAsync(string username, string password)
@@ -43,9 +45,10 @@ namespace RedeSocial.Application.Services
         {
             try
             {
-                user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(user.Password);
-
                 await _userRepository.CreateAsync(user);
+
+                await _domainEventDispatcher.DispatchAsync(user.DomainEvents);
+                user.ClearDomainEvent();
 
                 return Result.Success();
             }
