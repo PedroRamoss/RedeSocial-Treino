@@ -11,14 +11,16 @@ namespace RedeSocial.Api.Controllers.BaseController
             if (result.Error == null)
                 return StatusCode(500, "An unknown error occurred.");
 
+            var errorDescription = new { error = result.Error.Description };
+
             return result.Error.Type switch
             {
-                ErrorType.NotFound => NotFound(result.Error.Description),
-                ErrorType.Unauthorized => Unauthorized(result.Error.Description),
-                ErrorType.BadRequest => BadRequest(result.Error.Description),
-                ErrorType.UnprocessableEntity => UnprocessableEntity(result.Error.Description),
+                ErrorType.NotFound => NotFound(errorDescription),
+                ErrorType.Unauthorized => Unauthorized(errorDescription),
+                ErrorType.BadRequest => BadRequest(errorDescription),
+                ErrorType.UnprocessableEntity => UnprocessableEntity(errorDescription),
                 ErrorType.Forbbiden => Forbid(result.Error.Description),
-                _ => StatusCode(500, result.Error.Description)
+                _ => StatusCode(500, errorDescription)
             };
         }
     }

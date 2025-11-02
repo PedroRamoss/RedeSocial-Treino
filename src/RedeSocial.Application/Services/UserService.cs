@@ -41,20 +41,25 @@ namespace RedeSocial.Application.Services
             return new { UserId = user.Id, AccessToken = tokenHandler.WriteToken(token), ExpiresIn = token.ValidTo };
         }
 
-        public async Task<Result> CreateUserAsync(User user)
+        public async Task<Result<User>> CreateUserAsync(User user)
         {
             try
             {
+                if(await _userRepository.AnyAsync(user))
+                {
+                    return Result<User>.Failure(new Error("400", ErrorType.UnprocessableEntity, "Usuario já existe."));
+                }
+
                 await _userRepository.CreateAsync(user);
 
                 await _domainEventDispatcher.DispatchAsync(user.DomainEvents);
                 user.ClearDomainEvent();
 
-                return Result.Success();
+                return Result<User>.Success(user);
             }
             catch (Exception ex)
             {
-                return Errors.BadRequest;
+                return Result<User>.Failure(Errors.BadRequest);
             }
 
         }
@@ -69,7 +74,7 @@ namespace RedeSocial.Application.Services
                 var refreshUser = await _userRepository.GetByIdAsync(id);
 
                 if (refreshUser is null)
-                    return Result.Failure(Errors.AccountNotFound);
+                    return Result<object>.Failure(Errors.AccountNotFound);
 
                 var result = await _userRepository.UpdateUserAsync(id, user);
 
@@ -79,14 +84,14 @@ namespace RedeSocial.Application.Services
 
                     var token = GenerateToken(refreshUser, tokenHandler);
 
-                    return new { UserId = id, AccessToken = tokenHandler.WriteToken(token), ExpiresIn = token.ValidTo };
+                    return Result<object>.Success(new { UserId = id, AccessToken = tokenHandler.WriteToken(token), ExpiresIn = token.ValidTo });
                 }
 
-                return Result.Failure(Errors.BadRequest);
+                return Result<object>.Failure(Errors.BadRequest);
             }
             catch (Exception ex)
             {
-                return new Error("141", ErrorType.UnprocessableEntity, "Erro ao Atualizar usuario"); 
+                return Result<object>.Failure(new Error("141", ErrorType.UnprocessableEntity, "Erro ao Atualizar usuario")); 
             }
         }
 

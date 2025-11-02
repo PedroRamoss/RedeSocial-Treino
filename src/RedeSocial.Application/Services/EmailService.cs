@@ -20,9 +20,9 @@ namespace RedeSocial.Application.Services
 
         public async Task SendAsync(string email, string message)
         {
-            var client = new SmtpClient("teste", 587)
+            var client = new SmtpClient("live.smtp.mailtrap.io", 587)
             {
-                Credentials = new NetworkCredential("api", "minhaApiKey"),
+                Credentials = new NetworkCredential("api", "Teste"),
                 EnableSsl = true
             };
 

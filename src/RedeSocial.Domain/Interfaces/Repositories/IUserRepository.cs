@@ -5,6 +5,8 @@ namespace RedeSocial.Domain.Interfaces.Repositories
 {
     public interface IUserRepository
     {
+        Task<bool> AnyAsync(User user);
+
         Task<User> GetByUsernameAsync(string username);
 
         Task CreateAsync(User user);

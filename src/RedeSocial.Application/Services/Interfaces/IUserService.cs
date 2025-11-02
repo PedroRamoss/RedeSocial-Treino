@@ -10,6 +10,6 @@ namespace RedeSocial.Application.Services.Interfaces
 
         Task<Result<object>> UpdateUserAsync(Guid id, UserUpdateDto user);
 
-        Task<Result> CreateUserAsync(User user);
+        Task<Result<User>> CreateUserAsync(User user);
     }
 }

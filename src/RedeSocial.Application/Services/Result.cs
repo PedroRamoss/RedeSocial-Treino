@@ -16,7 +16,7 @@ namespace RedeSocial.Application.Services
             Error = error;
         }
 
-        public static Result Success() => new(true, null);
+        public static Result Success() => new (true, null);
         public static Result Failure(Error error) => new(false, error ?? throw new ArgumentNullException(nameof(error)));
 
         public static implicit operator Result(Error error) => Failure(error);
@@ -24,9 +24,9 @@ namespace RedeSocial.Application.Services
 
     public record Result<T> : Result
     {
-        public T? Value { get; }
+        public T? Response { get; }
 
-        private Result(T value) : base(true, null) => Value = value;
+        private Result(T value) : base(true, null) => Response = value;
         private Result(Error error) : base(false, error) { }
 
         public static Result<T> Success(T value) => new(value);
@@ -46,6 +46,8 @@ namespace RedeSocial.Application.Services
     }
 
     public record Error(string Id, ErrorType Type, string Description);
+
+    public record ErrorDescription(string error, string description);
 
     public static class Errors
     {

@@ -24,7 +24,7 @@ namespace RedeSocial.Api.Controllers.UserControllers
             var result = await _userService.LoginAsync(user.UserName, user.Password);
 
             if (!result.IsSuccess)
-                HandleFailure(result);
+                return HandleFailure(result);
 
             return Ok(result);
         }
@@ -35,9 +35,9 @@ namespace RedeSocial.Api.Controllers.UserControllers
             var result = await _userService.CreateUserAsync(user.ToDomain());
 
             if (!result.IsSuccess)
-                HandleFailure(result);
+                return HandleFailure(result);
 
-            return Ok();
+            return Ok(result);
         }
 
         [Authorize]
@@ -47,9 +47,9 @@ namespace RedeSocial.Api.Controllers.UserControllers
             var result = await _userService.UpdateUserAsync(id, user);
 
             if (!result.IsSuccess)
-                HandleFailure(result);
+                return HandleFailure(result);
 
-            return Ok(result.Value);
+            return Ok(result.Response);
         }
     }
 

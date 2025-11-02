@@ -15,6 +15,18 @@ namespace RedeSocial.Database.Repositories
             _connection = connection;
         }
 
+        //Pode ser colocado mais coisas nessa verificação.
+        public async Task<bool> AnyAsync(User user)
+        {
+            using var conn = _connection.GetConnection();
+
+            var sql = @"SELECT 1 FROM Users WHERE Username = @Username LIMIT 1;";
+
+            var retorno = await conn.QueryFirstOrDefaultAsync<int?>(sql, new { Username = user.UserName });
+
+            return retorno.HasValue;
+        }
+
         public async Task CreateAsync(User user)
         {
             using var conn = _connection.GetConnection();
