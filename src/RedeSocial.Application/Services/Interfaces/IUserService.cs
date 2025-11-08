@@ -1,5 +1,7 @@
 ﻿using RedeSocial.Application.Models;
+using RedeSocial.Application.Services.Commands;
 using RedeSocial.Domain.Entities;
+using RedeSocial.Doman;
 
 
 namespace RedeSocial.Application.Services.Interfaces
@@ -10,6 +12,6 @@ namespace RedeSocial.Application.Services.Interfaces
 
         Task<Result<object>> UpdateUserAsync(Guid id, UserUpdateDto user);
 
-        Task<Result<User>> CreateUserAsync(User user);
+        Task<Result<User>> CreateUserAsync(CreateUserCommand user);
     }
 }

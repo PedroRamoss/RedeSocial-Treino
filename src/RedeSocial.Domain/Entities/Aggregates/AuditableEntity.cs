@@ -1,9 +1,9 @@
 ﻿namespace RedeSocial.Domain.Entities.Aggregates
 {
-    public abstract class AuditableEntity
+    public interface IAuditableEntity
     {
-        public DateTime CreatedAt { get; protected set; }
-        public DateTime UpdatedAt { get; protected set; }
+        public DateTime CreatedAt { get;  set; }
+        public DateTime UpdatedAt { get; set; }
 
     }
 }

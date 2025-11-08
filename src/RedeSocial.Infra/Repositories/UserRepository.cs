@@ -1,12 +1,13 @@
 ﻿using Dapper;
 using RedeSocial.Database.Configuration;
 using RedeSocial.Domain.Entities;
+using RedeSocial.Domain.Interfaces.DomainServices;
 using RedeSocial.Domain.Interfaces.Repositories;
 using RedeSocial.Domain.Models;
 
 namespace RedeSocial.Database.Repositories
 {
-    public class UserRepository : IUserRepository
+    public class UserRepository : IUserRepository, IUserUniquenessChecker
     {
         private readonly DatabaseConnection _connection;
 
@@ -16,13 +17,13 @@ namespace RedeSocial.Database.Repositories
         }
 
         //Pode ser colocado mais coisas nessa verificação.
-        public async Task<bool> AnyAsync(User user)
+        public async Task<bool> IsUniqueAsync(string username)
         {
             using var conn = _connection.GetConnection();
 
             var sql = @"SELECT 1 FROM Users WHERE Username = @Username LIMIT 1;";
 
-            var retorno = await conn.QueryFirstOrDefaultAsync<int?>(sql, new { Username = user.UserName });
+            var retorno = await conn.QueryFirstOrDefaultAsync<int?>(sql, new { Username = username });
 
             return retorno.HasValue;
         }

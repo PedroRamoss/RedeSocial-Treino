@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using RedeSocial.Database.Configuration;
 using RedeSocial.Database.Repositories;
+using RedeSocial.Domain.Interfaces.DomainServices;
 using RedeSocial.Domain.Interfaces.Repositories;
 
 namespace RedeSocial.Database
@@ -12,6 +13,7 @@ namespace RedeSocial.Database
             services.AddScoped<DatabaseConnection>();
 
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IUserUniquenessChecker>(sp => (IUserUniquenessChecker)sp.GetRequiredService<IUserRepository>());
             services.AddScoped<IPostRepository, PostRepository>();
         }
     }

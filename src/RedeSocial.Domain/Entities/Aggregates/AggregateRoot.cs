@@ -2,12 +2,11 @@
 
 namespace RedeSocial.Domain.Entities.Aggregates
 {
-    public abstract class AggregateRoot : AuditableEntity
+    public abstract class AggregateRoot : Entity
     {
         private List<IDomainEvent> _domainEvents = new();
         public IReadOnlyCollection<IDomainEvent> DomainEvents => _domainEvents;
 
-        public Guid Id { get; set; }
         protected AggregateRoot()
         {
             Id = Guid.NewGuid();

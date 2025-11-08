@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RedeSocial.Application.Services;
+using RedeSocial.Doman;
 
 namespace RedeSocial.Api.Controllers.BaseController
 {
@@ -11,7 +12,7 @@ namespace RedeSocial.Api.Controllers.BaseController
             if (result.Error == null)
                 return StatusCode(500, "An unknown error occurred.");
 
-            var errorDescription = new { error = result.Error.Description };
+            var errorDescription = new { codError = result.Error.Id, error = result.Error.Description };
 
             return result.Error.Type switch
             {

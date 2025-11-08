@@ -24,7 +24,7 @@ namespace RedeSocial.Database.Repositories
             throw new NotImplementedException();
         }
 
-        public async Task MakeAPostAsync(Post post)
+        public async Task<bool> CreatePostAsync(Post post)
         {
             var conenction = _connection.GetConnection();
             var sql = @"INSERT INTO POSTS(Id, UserId, Content, PhotoUrl, CreatedAt) VALUES (@Id, @UserId, @Content, @PhotoUrl, @CreatedAt)";
@@ -33,11 +33,13 @@ namespace RedeSocial.Database.Repositories
                  new
                  {
                      @id = post.Id,
-                     @Userid = post.User.Id,
+                     @UserId = post.UserId,
                      @Content = post.Content,
                      @PhotoUrl = post.PhotoUrl,
                      @CreatedAt = DateTime.UtcNow
                  });
+
+            return result > 0;
         }
     }
 }

@@ -32,7 +32,7 @@ namespace RedeSocial.Api.Controllers.UserControllers
         [HttpPost("create-account")]
         public async Task<IActionResult> CreateAccountAsync([FromBody] CreateUserRequest user)
         {
-            var result = await _userService.CreateUserAsync(user.ToDomain());
+            var result = await _userService.CreateUserAsync(user.ToCommand());
 
             if (!result.IsSuccess)
                 return HandleFailure(result);

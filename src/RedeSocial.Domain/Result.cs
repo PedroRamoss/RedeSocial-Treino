@@ -1,5 +1,5 @@
 ﻿
-namespace RedeSocial.Application.Services
+namespace RedeSocial.Doman
 {
     public record Result
     {

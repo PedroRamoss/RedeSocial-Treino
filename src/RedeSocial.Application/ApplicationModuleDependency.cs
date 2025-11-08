@@ -9,6 +9,7 @@ namespace RedeSocial.Application
         public static void AddApplicationDependency(this IServiceCollection services)
         {
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IPostService, PostService>();
         }
     }
 }

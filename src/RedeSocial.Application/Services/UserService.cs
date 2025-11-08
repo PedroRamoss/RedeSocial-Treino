@@ -2,9 +2,12 @@
 using Microsoft.IdentityModel.Tokens;
 using RedeSocial.Application.Dispatcher;
 using RedeSocial.Application.Models;
+using RedeSocial.Application.Services.Commands;
 using RedeSocial.Application.Services.Interfaces;
 using RedeSocial.Domain.Entities;
+using RedeSocial.Domain.Interfaces.DomainServices;
 using RedeSocial.Domain.Interfaces.Repositories;
+using RedeSocial.Doman;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -16,12 +19,14 @@ namespace RedeSocial.Application.Services
         private readonly IUserRepository _userRepository;
         private readonly IConfiguration _configuration;
         private readonly IDomainEventDispatcher _domainEventDispatcher;
+        private readonly IUserUniquenessChecker _userUniquenessChecker;
 
-        public UserService(IUserRepository userRepository, IConfiguration configuration, IDomainEventDispatcher domainEventDispatcher)
+        public UserService(IUserRepository userRepository, IConfiguration configuration, IDomainEventDispatcher domainEventDispatcher, IUserUniquenessChecker userUniquenessChecker)
         {
             _userRepository = userRepository;
             _configuration = configuration;
             _domainEventDispatcher = domainEventDispatcher;
+            _userUniquenessChecker = userUniquenessChecker;
         }
 
         public async Task<Result<object>> LoginAsync(string username, string password)
@@ -41,14 +46,24 @@ namespace RedeSocial.Application.Services
             return new { UserId = user.Id, AccessToken = tokenHandler.WriteToken(token), ExpiresIn = token.ValidTo };
         }
 
-        public async Task<Result<User>> CreateUserAsync(User user)
+        public async Task<Result<User>> CreateUserAsync(CreateUserCommand userRequest)
         {
             try
             {
-                if(await _userRepository.AnyAsync(user))
-                {
-                    return Result<User>.Failure(new Error("400", ErrorType.UnprocessableEntity, "Usuario já existe."));
-                }
+                var userResult = await User.CreateAsync(
+                       userRequest.UserName,
+                       userRequest.Email,
+                       userRequest.Password,
+                       userRequest.DisplayName,
+                       userRequest.ProfilePhotoUrl,
+                       userRequest.DateOfBirth,
+                       _userUniquenessChecker
+                   );
+
+                if (!userResult.IsSuccess)
+                    return userResult;
+
+                var user = userResult.Response!;
 
                 await _userRepository.CreateAsync(user);
 
