@@ -2,7 +2,6 @@
 using Microsoft.IdentityModel.Tokens;
 using RedeSocial.Application.Dispatcher;
 using RedeSocial.Application.Models;
-using RedeSocial.Application.Services.Commands;
 using RedeSocial.Application.Services.Interfaces;
 using RedeSocial.Domain.Entities;
 using RedeSocial.Domain.Interfaces.DomainServices;
@@ -12,7 +11,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace RedeSocial.Application.Services
+namespace RedeSocial.Application.Services.Commands
 {
     public class UserService : IUserService
     {
@@ -106,7 +105,7 @@ namespace RedeSocial.Application.Services
             }
             catch (Exception ex)
             {
-                return Result<object>.Failure(new Error("141", ErrorType.UnprocessableEntity, "Erro ao Atualizar usuario")); 
+                return Result<object>.Failure(new Error("141", ErrorType.UnprocessableEntity, "Erro ao Atualizar usuario"));
             }
         }
 

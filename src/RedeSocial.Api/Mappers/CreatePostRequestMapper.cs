@@ -10,7 +10,7 @@ namespace RedeSocial.Api.Mappers
             return Post.Create(
                 Guid.Parse(request.UserId),
                 request.Content,
-                request.PhotoUrl, 
+                request.PhotoUrl,
                 request.Comment
                 );
         }

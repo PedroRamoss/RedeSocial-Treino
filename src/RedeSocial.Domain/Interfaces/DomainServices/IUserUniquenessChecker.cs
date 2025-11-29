@@ -3,5 +3,5 @@
     public interface IUserUniquenessChecker
     {
         Task<bool> IsUniqueAsync(string username);
-     }
+    }
 }

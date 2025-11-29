@@ -1,9 +1,8 @@
 ﻿using RedeSocial.Domain.Entities.Aggregates;
-using System.Xml.Linq;
 
 namespace RedeSocial.Domain.Entities
 {
-    public class Post : AggregateRoot, IAuditableEntity
+    public class Post : Entity, IAuditableEntity
     {
         public Guid UserId { get; private set; }
         public string Content { get; private set; }

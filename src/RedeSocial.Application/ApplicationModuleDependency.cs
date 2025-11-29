@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using RedeSocial.Application.Services;
+using RedeSocial.Application.Services.Commands;
 using RedeSocial.Application.Services.Interfaces;
 
 namespace RedeSocial.Application

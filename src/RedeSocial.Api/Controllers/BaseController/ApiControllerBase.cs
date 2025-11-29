@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using RedeSocial.Application.Services;
 using RedeSocial.Doman;
 
 namespace RedeSocial.Api.Controllers.BaseController

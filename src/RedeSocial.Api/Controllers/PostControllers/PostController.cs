@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RedeSocial.Api.Controllers.BaseController;
 using RedeSocial.Api.Controllers.PostControllers.Request;
-using RedeSocial.Api.Controllers.UserControllers.Request;
 using RedeSocial.Api.Mappers;
 using RedeSocial.Application.Services.Interfaces;
 
@@ -24,7 +22,7 @@ namespace RedeSocial.Api.Controllers.PostControllers
         [HttpPost("create-post")]
         public async Task<IActionResult> CreateAccountAsync([FromBody] CreatePostRequest post, CancellationToken cancellationToken)
         {
-            var result = await _postService.CreatePostAsync(post.ToDomain(), cancellationToken);
+            var result = await _postService.CreatePostAsync(post.ToCommand(), cancellationToken);
 
             if (!result.IsSuccess)
                 return HandleFailure(result);

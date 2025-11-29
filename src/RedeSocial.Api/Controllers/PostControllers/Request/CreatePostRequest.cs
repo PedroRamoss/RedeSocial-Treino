@@ -1,6 +1,4 @@
-﻿using RedeSocial.Domain.Entities;
-
-namespace RedeSocial.Api.Controllers.PostControllers.Request
+﻿namespace RedeSocial.Api.Controllers.PostControllers.Request
 {
     public class CreatePostRequest
     {
